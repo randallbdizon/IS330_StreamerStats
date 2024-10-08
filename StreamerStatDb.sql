@@ -67,35 +67,36 @@ INSERT INTO `Groups` (group_name) VALUES
 ('Justice');
 
 
-SELECT st.title AS stream_title, s.name AS streamer_name, st.date, st.viewer_count
-FROM `Stream` st
-JOIN Streamers s ON st.streamer_id = s.streamer_id
-WHERE s.name = 'Fuwawa' -- Replace 'Fuwawa' with any streamer's name, or remove this line for all recent streams
-ORDER BY st.date DESC
+SELECT `Stream`.title, Streamers.name, `Stream`.date, `Stream`.viewer_count
+FROM `Stream`
+JOIN Streamers ON `Stream`.streamer_id = Streamers.streamer_id
+WHERE Streamers.name = 'Fuwawa' -- Replace 'Fuwawa' with any streamer's name, or remove this line for all recent streams
+ORDER BY `Stream`.date DESC
 LIMIT 10;
 
-SELECT s.name AS streamer_name, p.platform_name, AVG(st.viewer_count) AS avg_viewers
-FROM `Stream` st
-JOIN Streamers s ON st.streamer_id = s.streamer_id
-JOIN Platform p ON st.platform_id = p.platform_id
-GROUP BY s.name, p.platform_name
-ORDER BY avg_viewers DESC;
+SELECT Streamers.name, Platform.platform_name, AVG(`Stream`.viewer_count)
+FROM `Stream`
+JOIN Streamers ON `Stream`.streamer_id = Streamers.streamer_id
+JOIN Platform ON `Stream`.platform_id = Platform.platform_id
+GROUP BY Streamers.name, Platform.platform_name
+ORDER BY AVG(`Stream`.viewer_count) DESC;
 
-SELECT s.name AS streamer_name, SUM(st.sub_count) AS total_subscribers
-FROM `Stream` st
-JOIN Streamers s ON st.streamer_id = s.streamer_id
-GROUP BY s.name
-ORDER BY total_subscribers DESC
+SELECT Streamers.name, SUM(`Stream`.sub_count)
+FROM `Stream`
+JOIN Streamers ON `Stream`.streamer_id = Streamers.streamer_id
+GROUP BY Streamers.name
+ORDER BY SUM(`Stream`.sub_count) DESC
 LIMIT 5;
 
-SELECT st.title AS stream_title, s.name AS streamer_name, st.date, st.tags, st.viewer_count
-FROM `Stream` st
-JOIN Streamers s ON st.streamer_id = s.streamer_id
-WHERE st.tags LIKE '%gaming%' -- Replace 'gaming' with any other tag
-ORDER BY st.viewer_count DESC;
+SELECT `Stream`.title, Streamers.name, `Stream`.date, `Stream`.tags, `Stream`.viewer_count
+FROM `Stream`
+JOIN Streamers ON `Stream`.streamer_id = Streamers.streamer_id
+WHERE `Stream`.tags LIKE '%gaming%' -- Replace 'gaming' with any other tag
+ORDER BY `Stream`.viewer_count DESC;
 
-SELECT st.date, st.title AS stream_title, st.viewer_count
-FROM `Stream` st
-JOIN Streamers s ON st.streamer_id = s.streamer_id
-WHERE s.name = 'Mococo' -- Replace 'Mococo' with any streamer's name
-ORDER BY st.date ASC;
+SELECT `Stream`.date, `Stream`.title, `Stream`.viewer_count
+FROM `Stream`
+JOIN Streamers ON `Stream`.streamer_id = Streamers.streamer_id
+WHERE Streamers.name = 'Mococo' -- Replace 'Mococo' with any streamer's name
+ORDER BY `Stream`.date ASC;
+
