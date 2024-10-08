@@ -17,7 +17,6 @@ CREATE TABLE Streamers (
     FOREIGN KEY (platform_id) REFERENCES Platform(platform_id) -- Foreign key references Platform
 );
 
-
 CREATE TABLE `Stream` (
     stream_id INT AUTO_INCREMENT PRIMARY KEY,
     streamer_id INT,
@@ -36,9 +35,7 @@ CREATE TABLE `Groups` (
     group_name VARCHAR(100) NOT NULL
 );
 
-
-
--- Insert random data into the Platform table
+-- Insert data into the Platform table
 INSERT INTO Platform (platform_name) VALUES 
 ('YouTube'),
 ('Twitch'),
@@ -46,29 +43,30 @@ INSERT INTO Platform (platform_name) VALUES
 ('Kick'),
 ('Trovo');
 
--- Insert random data into the Streamers table
+-- Insert data into the Streamers table
 INSERT INTO Streamers (name, member_id, platform_id) VALUES
-('Fuwawa', 'FUW123', FLOOR(1 + RAND() * 5)),
-('Mococo', 'MOC456', FLOOR(1 + RAND() * 5)),
-('Gura', 'GUR789', FLOOR(1 + RAND() * 5)),
-('Calli', 'CAL123', FLOOR(1 + RAND() * 5)),
-('Kronii', 'KRO456', FLOOR(1 + RAND() * 5));
+('Fuwawa', 'FUW123', 1),
+('Mococo', 'MOC456', 2),
+('Gura', 'GUR789', 1),
+('Calli', 'CAL123', 2),
+('Kronii', 'KRO456', 3);
 
--- Insert random data into the Stream table
+-- Insert data into the Stream table
 INSERT INTO `Stream` (streamer_id, platform_id, date, title, tags, viewer_count, sub_count) VALUES
-(FLOOR(1 + RAND() * 5), FLOOR(1 + RAND() * 5), '2024-10-08', 'Let''s Play Minecraft', 'gaming, minecraft', FLOOR(100 + RAND() * 900), FLOOR(10 + RAND() * 90)),
-(FLOOR(1 + RAND() * 5), FLOOR(1 + RAND() * 5), '2024-10-07', 'Zatsudan Stream', 'talk, zatsudan', FLOOR(100 + RAND() * 900), FLOOR(10 + RAND() * 90)),
-(FLOOR(1 + RAND() * 5), FLOOR(1 + RAND() * 5), '2024-10-06', 'Collaborating with Friends', 'collab, gaming', FLOOR(100 + RAND() * 900), FLOOR(10 + RAND() * 90)),
-(FLOOR(1 + RAND() * 5), FLOOR(1 + RAND() * 5), '2024-10-05', 'Horror Game Special', 'gaming, horror', FLOOR(100 + RAND() * 900), FLOOR(10 + RAND() * 90)),
-(FLOOR(1 + RAND() * 5), FLOOR(1 + RAND() * 5), '2024-10-04', 'Singing Karaoke!', 'music, karaoke', FLOOR(100 + RAND() * 900), FLOOR(10 + RAND() * 90));
+(1, 1, '2024-10-08', 'Let''s Play Minecraft', 'gaming, minecraft', 450, 75),
+(2, 2, '2024-10-07', 'Zatsudan Stream', 'talk, zatsudan', 300, 50),
+(3, 1, '2024-10-06', 'Collaborating with Friends', 'collab, gaming', 600, 90),
+(4, 2, '2024-10-05', 'Horror Game Special', 'gaming, horror', 550, 85),
+(5, 3, '2024-10-04', 'Singing Karaoke!', 'music, karaoke', 700, 100);
 
--- Insert random data into the Groups table
+-- Insert data into the Groups table
 INSERT INTO `Groups` (group_name) VALUES
 ('Hololive'),
 ('Nijisanji'),
 ('VShojo'),
 ('Independents'),
 ('Myth');
+
 
 SELECT st.title AS stream_title, s.name AS streamer_name, st.date, st.viewer_count
 FROM `Stream` st
