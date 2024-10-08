@@ -100,3 +100,26 @@ JOIN Streamers ON `Stream`.streamer_id = Streamers.streamer_id
 WHERE Streamers.name = 'Mococo' -- Replace 'Mococo' with any streamer's name
 ORDER BY `Stream`.date ASC;
 
+
+-- For IS330 Lab Project
+
+-- Inserting a new streamer into the Streamers table
+INSERT INTO Streamers (name, member_id, platform_id) 
+VALUES ('Amelia', 'AME321', 1);
+
+-- Updating a streamer's name
+UPDATE Streamers
+SET name = 'Amelia Watson'
+WHERE member_id = 'AME321';
+
+-- Selecting all streamers from the Streamers table
+SELECT * FROM Streamers;
+
+-- Selecting stream title and the name of the streamer who hosted it
+SELECT `Stream`.title, Streamers.name
+FROM `Stream`
+JOIN Streamers ON `Stream`.streamer_id = Streamers.streamer_id;
+
+-- Deleting a streamer from the Streamers table
+DELETE FROM Streamers
+WHERE member_id = 'AME321';
