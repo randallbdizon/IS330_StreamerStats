@@ -61,11 +61,10 @@ INSERT INTO `Stream` (streamer_id, platform_id, date, title, tags, viewer_count,
 
 -- Insert data into the Groups table
 INSERT INTO `Groups` (group_name) VALUES
-('Hololive'),
-('Nijisanji'),
-('VShojo'),
-('Independents'),
-('Myth');
+('Myth'),
+('Promise'),
+('Advent'),
+('Justice');
 
 
 SELECT st.title AS stream_title, s.name AS streamer_name, st.date, st.viewer_count
