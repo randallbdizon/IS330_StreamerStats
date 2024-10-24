@@ -8,8 +8,8 @@ CREATE TABLE Platforms (
     name VARCHAR(100) NOT NULL UNIQUE
 );
 
-CREATE TABLE `Groups` (
-    group_id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE `Mediums` (
+    medium_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE
 );
 
@@ -19,8 +19,8 @@ CREATE TABLE Streamers (
     name VARCHAR(100) NOT NULL UNIQUE, -- Maybe differentiate between username and first name and/or last name
     member_id VARCHAR(50),
     platform_id INT,  -- Ensure this data type matches with the primary key in Platform
-    group_id INT,
-    FOREIGN KEY (group_id) REFERENCES `Groups`(group_id),
+    medium_id INT,
+    FOREIGN KEY (medium_id) REFERENCES `mediums`(medium_id),
     FOREIGN KEY (platform_id) REFERENCES Platforms(platform_id) -- Foreign key references Platform
     -- add a password hash
 );
@@ -29,15 +29,15 @@ CREATE TABLE `Streams` (
     stream_id INT AUTO_INCREMENT PRIMARY KEY,
     streamer_id INT,
     platform_id INT,
-    group_id INT,
+    medium_id INT,
     date DATE,
     title VARCHAR(200) NOT NULL,
     tags TEXT, -- Split up tags to their own tables
     viewer_count INT,
-    sub_count INT,
+    follow_count INT,
     FOREIGN KEY (streamer_id) REFERENCES Streamers(streamer_id),
     FOREIGN KEY (platform_id) REFERENCES Platforms(platform_id),
-    FOREIGN KEY (group_id) REFERENCES `Groups`(group_id)
+    FOREIGN KEY (medium_id) REFERENCES `mediums`(medium_id)
 );
 
 
@@ -58,30 +58,24 @@ INSERT INTO Platforms (name) VALUES
 ('Kick'),
 ('Trovo');
 
--- Insert data into the Groups table
-INSERT INTO `Groups` (name) VALUES
-('Myth'),
-('Promise'),
-('Advent'),
-('Justice');
+-- Insert data into the mediums table
+INSERT INTO `mediums` (name) VALUES
+('VTuber'),
+('PNG'),
+('Webcam');
 
 -- Insert data into the Streamers table
-INSERT INTO Streamers (name, member_id, platform_id, group_id) VALUES
-('Fuwawa', 'FUW123', 1, 3),
-('Mococo', 'MOC456', 2, 3),
-('Gura', 'GUR789', 1, 1),
-('Calli', 'CAL123', 2, 1),
-('Kronii', 'KRO456', 3, 2),
-('Gigi', 'GIG789', 5, 4);
+INSERT INTO Streamers (name, member_id, platform_id, medium_id) VALUES
+('DarukaEon', 'DAR123', 3, 2),
+('Riven_Black', 'RIV456', 1, 3),
+('Defii_Azrul', 'DEF789', 2, 1);
+
 
 -- Insert data into the Stream table
-INSERT INTO `Streams` (streamer_id, platform_id, date, title, tags, viewer_count, sub_count) VALUES
-(1, 1, '2024-10-08', 'Let''s Play Minecraft', 'gaming, minecraft', 450, 75),
-(2, 2, '2024-10-07', 'Zatsudan Stream', 'talk, zatsudan', 300, 50),
-(3, 1, '2024-10-06', 'Collaborating with Friends', 'collab, gaming', 600, 90),
-(4, 2, '2024-10-05', 'Horror Game Special', 'gaming, horror', 550, 85),
-(5, 3, '2024-10-04', 'Singing Karaoke!', 'music, karaoke', 700, 100);
-
+INSERT INTO `Streams` (streamer_id, platform_id, date, title, tags, viewer_count, follow_count) VALUES
+(1, 3, '2024-10-08', 'Let''s Play Minecraft', 'gaming, minecraft', 5, 5),
+(2, 3, '2024-10-07', 'Working on Guitar Tracks', 'music, guitar', 3, 8),
+(3, 1, '2024-10-07', 'Magic Mondays', 'collab, gaming', 15, 13);
 
 
 
@@ -90,10 +84,10 @@ INSERT INTO `Streams` (streamer_id, platform_id, date, title, tags, viewer_count
 
 -- Select statements here
 
-SELECT `Streams`.title, Streamers.name, `Streams`.date, `Streams`.viewer_count
+SELECT `Streams`.title, Streamers.name, `Streams`.date, `Streams`.viewer_count AS viewers
 FROM `Streams`
 JOIN Streamers ON `Streams`.streamer_id = Streamers.streamer_id
-WHERE Streamers.name = 'Fuwawa' -- Replace 'Fuwawa' with any streamer's name, or remove this line for all recent streams
+WHERE Streamers.name = 'Riven_Black' -- Replace 'Riven_Black' with any streamer's name, or remove this line for all recent streams
 ORDER BY `Streams`.date DESC
 LIMIT 10;
 
@@ -101,15 +95,15 @@ SELECT Streamers.name, Platforms.name, AVG(`Streams`.viewer_count)
 FROM `Streams`
 JOIN Streamers ON `Streams`.streamer_id = Streamers.streamer_id
 JOIN Platforms ON `Streams`.platform_id = Platforms.platform_id
-JOIN `Groups` ON `Streams`.group_id = `Groups`.group_id
+JOIN `mediums` ON `Streams`.medium_id = `mediums`.medium_id
 GROUP BY Streamers.name, Platforms.name
 ORDER BY AVG(`Streams`.viewer_count) DESC;
 
-SELECT Streamers.name, SUM(`Streams`.sub_count)
+SELECT Streamers.name, SUM(`Streams`.follow_count)
 FROM `Streams`
 JOIN Streamers ON `Streams`.streamer_id = Streamers.streamer_id
 GROUP BY Streamers.name
-ORDER BY SUM(`Streams`.sub_count) DESC
+ORDER BY SUM(`Streams`.follow_count) DESC
 LIMIT 5;
 
 SELECT `Streams`.title, Streamers.name, `Streams`.date, `Streams`.tags, `Streams`.viewer_count
@@ -121,14 +115,14 @@ ORDER BY `Streams`.viewer_count DESC;
 SELECT `Streams`.date, `Streams`.title, `Streams`.viewer_count
 FROM `Streams`
 JOIN Streamers ON `Streams`.streamer_id = Streamers.streamer_id
-WHERE Streamers.name = 'Mococo' -- Replace 'Mococo' with any streamer's name
+WHERE Streamers.name = 'DarukaEon' -- Replace 'Mococo' with any streamer's name
 ORDER BY `Streams`.date ASC;
 
 
 -- For IS330 Lab Project
 
 -- Inserting a new streamer into the Streamers table
-INSERT INTO Streamers (name, member_id, platform_id, group_id) 
+INSERT INTO Streamers (name, member_id, platform_id, medium_id) 
 VALUES ('Amelia', 'AME321', 1, 1);
 
 -- Updating a streamer's name

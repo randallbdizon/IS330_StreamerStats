@@ -1,38 +1,42 @@
 <style>
     body {
+        font-family: 'Comic Sans MS';
+        color: white;
         background-image: url('coughing_cat.png');
         background-size: contain;
     }
 </style>
+<h1>List of HoloLive EN Streamers</h1>
+<ul>
+    <?php
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "streamerStat";
 
-<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "streamerStat";
+    //Create connection
+    $conn = new mysqli($servername, $username, $password, $dbname);
 
-//Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-//Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-$sql = "SELECT name FROM streamers";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    //Output data of each row
-    while ($row = $result->fetch_assoc()) {
-        echo "Streamer: " . $row["name"] . "<br>";
+    //Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
     }
-} else {
-    echo "0 results";
-}
-$conn->close();
 
-for ($i = 0; $i < 100; $i++) {
-    echo "<p>This is a paragraph</p>";
-}
-?>
+    $sql = "SELECT name FROM streamers";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        //Output data of each row
+        while ($row = $result->fetch_assoc()) {
+            echo "<li>" . "Streamer: " . $row["name"];
+        }
+    } else {
+        echo "0 results";
+    }
+    $conn->close();
+    ?>
+</ul>
+<label>Code:</label>
+<input type="text" name="code" value="<?php echo htmlspecialchars(
+    $product['productCode']
+); ?>"><br>
