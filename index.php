@@ -39,14 +39,14 @@
 
 <!-- Streamer ID search -->
 <form method="GET" action="">
-    <label for="code">Streamer ID:</label>
-    <input type="text" name="code" value="">
+    <label for="streamer">Streamer ID:</label>
+    <input type="text" name="streamer" value="">
     <input type="submit" value="Search">
 </form>
 <?php
 // Check if a streamer code was entered
-if (isset($_GET['code']) && !empty($_GET['code'])) {
-    $streamer_id = htmlspecialchars($_GET['code']);
+if (isset($_GET['streamer']) && !empty($_GET['streamer'])) {
+    $streamer_id = htmlspecialchars($_GET['streamer']);
     echo "Searching for Streamer ID: " . $streamer_id;
 
     // Perform a query based on the entered streamer ID if needed
