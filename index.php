@@ -23,6 +23,17 @@
     }
 
     $sql = "SELECT name, streamer_ID FROM streamers";
+
+    if (isset($_GET['streamer']) && !empty($_GET['streamer'])) {
+        $streamer = htmlspecialchars($_GET['streamer']);
+        $sql = "SELECT name, streamer_ID FROM streamers WHERE name like '%$streamer%'";
+        echo "Searching for Streamer ID: " . $streamer;
+    
+        // Perform a query based on the entered streamer ID if needed
+        // Add SQL here to retrieve and display relevant streamer data
+    }
+
+    
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -45,11 +56,5 @@
 </form>
 <?php
 // Check if a streamer code was entered
-if (isset($_GET['streamer']) && !empty($_GET['streamer'])) {
-    $streamer_id = htmlspecialchars($_GET['streamer']);
-    echo "Searching for Streamer ID: " . $streamer_id;
 
-    // Perform a query based on the entered streamer ID if needed
-    // Add SQL here to retrieve and display relevant streamer data
-}
 ?>
