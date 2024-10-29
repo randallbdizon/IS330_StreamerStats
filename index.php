@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-<meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List of Streamers</title>
-    <link rel="icon" href="Media/Images/CoughingCatIcon.png">
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
-
 <body>
     <h1>List of Streamers</h1>
+    <!-- Streamer ID search -->
+    <form method="GET" action="">
+        <label for="streamer">Streamer search:</label>
+        <input type="text" name="streamer" value="">
+        <input type="submit" value="Search">
+    </form>
     <ul>
         <?php
         $servername = "localhost";
@@ -54,22 +55,23 @@
                     if (!empty($row["website"])) {
                         $website = htmlspecialchars($row["website"]);
 
-                        // Determine the platform type
-                        $platform = "Website";
+                        // Determine the platform type and replace link text with an image
+                        $platformImage = "Media/Images/Website.png"; // Default image if platform isn't matched
+
                         if (strpos($website, 'twitch.tv') !== false) {
-                            $platform = "Twitch";
+                            $platformImage = "Media/Images/Twitch.png";
                         } elseif (strpos($website, 'youtube.com') !== false || strpos($website, 'youtu.be') !== false) {
-                            $platform = "YouTube";
+                            $platformImage = "Media/Images/Youtube.png";
                         } elseif (strpos($website, 'twitter.com') !== false) {
-                            $platform = "Twitter";
+                            $platformImage = "Media/Images/Twitter.png";
                         } elseif (strpos($website, 'facebook.com') !== false) {
-                            $platform = "Facebook";
+                            $platformImage = "Media/Images/Facebook.png";
                         } elseif (strpos($website, 'trovo.com') !== false) {
-                            $platform = "Trovo";
+                            $platformImage = "Media/Images/Trovo.png";
                         }
 
-                        // Display the platform and link
-                        echo "<br> $platform: <a href='" . $website . "' target='_blank'>" . $website . "</a>";
+                        // Display the platform image as a clickable link
+                        echo "<br> <a href='" . $website . "' target='_blank'><img src='" . $platformImage . "' alt='Platform' class='platform-icon'></a>";
                     } else {
                         echo "<br> No website.";
                     }
@@ -85,12 +87,6 @@
         ?>
     </ul>
 
-    <!-- Streamer ID search -->
-    <form method="GET" action="">
-        <label for="streamer">Streamer Name:</label>
-        <input type="text" name="streamer" value="">
-        <input type="submit" value="Search">
-    </form>
+    
 </body>
-
 </html>
