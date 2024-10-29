@@ -6,6 +6,7 @@
     <title>List of Streamers</title>
     <link rel="icon" href="Media/Images/CoughingCatIcon.png">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="script.js"></script>
 </head>
 <body>
     <h1>List of Streamers</h1>

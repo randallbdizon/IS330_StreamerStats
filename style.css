@@ -63,6 +63,12 @@ footer {
 	text-decoration: none;
 }
 
+.profile-icon {
+    width: 100px; /* Adjust the size as needed */
+    border-radius: 50%; /* Makes the image round */
+    margin-right: 10px; /* Adds spacing between the image and text */
+}
+
 .platform-icon {
 	width: 33%;
     display: inline-block;
