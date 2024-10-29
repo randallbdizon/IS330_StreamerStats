@@ -1,0 +1,165 @@
+html,
+body {
+    height: 95%;
+}
+
+@font-face {
+    font-family: Blogger Sans;
+    src: url("Media/Fonts/blogger-sans-font/Bloggersans-0rzv.otf");
+}
+
+body {
+	text-align: left;
+    font-family: Blogger Sans;
+    background-color: #000000;
+	color: white;
+	background-image: url("Media/Images/GreenGlitterBackground2.gif");
+	background-size: cover;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	background-position: bottom;
+	transition: background 0.5s;
+}
+
+footer {
+	margin: 0px;
+	bottom: -10px;
+    left: 20px;
+    position: fixed;
+}
+
+/* nav menu section*/
+
+#nav_menu {
+	text-align: center;
+}
+
+#nav_menu ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+#nav_menu li {
+	font-size: 120%;
+ 	padding-top: 0;
+	margin-top: 0;
+	margin-bottom: 0.25em;
+}
+
+/*Note: [margin/padding]: top right bottom left*/
+
+#nav_menu ul li {
+    flex-basis: 33%;
+	width: 35%;
+	margin: 0px 0px 0px 300px;
+}
+
+#nav_menu ul li a {
+	display: block;
+	text-align: left;
+	padding: 0;
+	margin: 5px;
+	text-decoration: none;
+}
+
+.image-container {
+	width: 33%;
+	float: right;
+	position: relative;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.493), 0 6px 20px 0 rgba(0, 0, 0, 0.164);
+    border-radius: 20px;
+	margin: 3px 200px 3px 0px;
+	background-color: #1994323f;
+}
+
+.image-container img {
+	width: 100%;
+}
+
+.swap-image {
+    transition: opacity 0.5s ease-in-out;
+}
+
+.image-container:hover .swap-image {
+    content: url('Media/Images/DarukaEon2.png');
+}
+
+section {
+    width: 50%;
+	float: left;
+}
+
+aside {
+    width: 50%;
+    float: right;
+    position: relative;
+}
+
+/*iframe {
+    margin: 8px 8px 8px -8px;
+    width: 416px;
+	height: 569px;
+    border: solid 5px;
+	border-color: rgb(71,200,16);
+	border-radius: 20px;
+	margin: 2px;
+	
+}*/
+
+/*Responsive web design thresholds*/
+/*Note: [margin/padding]: top right bottom left*/
+
+@media only screen and (width <= 1117.60px) {
+	.image-container{
+		width: 41%;
+		margin: 0px 10% 0px 0px;
+	}
+
+	#nav_menu ul li {
+		width: 45%;
+		margin: 0px 0px 0px 10%;
+	}
+}
+
+@media only screen and (width <= 550px) {
+	img {
+		width: 100%;
+    }
+
+	.image-container {
+		width: 100%;
+		margin:0px;
+	}
+
+	#nav_menu {
+		width: 100%;
+		margin:0;
+		padding:0;
+    }
+
+	#nav_menu ul li {
+		width: 100%;
+		margin: 0px;
+		padding: 0px;
+	}
+
+	#nav_menu ul li a {
+		background-color: transparent;
+	}
+
+    section, aside {
+        float: none;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    section ul {
+        /* order: 1; */
+        margin: 16px 16px 0px 0px; /*Note: top right bottom left*/
+    }
+    aside ul {
+        /* order: 2; */
+        margin: 0px 16px 16px 0px
+    }
+}
