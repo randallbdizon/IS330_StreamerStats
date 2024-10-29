@@ -22,24 +22,30 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $sql = "SELECT name, streamer_ID FROM streamers";
+    $sql = "SELECT * FROM streamers";
 
     if (isset($_GET['streamer']) && !empty($_GET['streamer'])) {
-        $streamer = htmlspecialchars($_GET['streamer']);
-        $sql = "SELECT name, streamer_ID FROM streamers WHERE name like '%$streamer%'";
-        echo "Searching for Streamer ID: " . $streamer;
-    
-        // Perform a query based on the entered streamer ID if needed
-        // Add SQL here to retrieve and display relevant streamer data
+        $streamer = $conn->real_escape_string($_GET['streamer']);
+        $sql = "SELECT * FROM streamers WHERE name LIKE '%$streamer%'";
+        echo "Searching for Streamer: " . htmlspecialchars($streamer) . "<br><br>";
     }
 
-    
     $result = $conn->query($sql);
+
+    if (!$result) {
+        die("Error executing query: " . $conn->error);
+    }
 
     if ($result->num_rows > 0) {
         //Output data of each row
         while ($row = $result->fetch_assoc()) {
-            echo "<li>Streamer: " . htmlspecialchars($row["name"]) . "</li>";
+            echo "<li>Streamer: " . htmlspecialchars($row["name"]);
+            if (!empty($row["website"])) {
+                echo "<br> Website: <a href='" . htmlspecialchars($row["website"]) . "' target='_blank'>" . htmlspecialchars($row["website"]) . "</a>";
+            } else {
+                echo "<br> No website.";
+            }
+            echo "</li>";
         }
     } else {
         echo "0 results";
@@ -50,11 +56,7 @@
 
 <!-- Streamer ID search -->
 <form method="GET" action="">
-    <label for="streamer">Streamer ID:</label>
+    <label for="streamer">Streamer Name:</label>
     <input type="text" name="streamer" value="">
     <input type="submit" value="Search">
 </form>
-<?php
-// Check if a streamer code was entered
-
-?>

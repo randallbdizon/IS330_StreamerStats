@@ -20,6 +20,7 @@ CREATE TABLE Streamers (
     member_id VARCHAR(50),
     platform_id INT,  -- Ensure this data type matches with the primary key in Platform
     medium_id INT,
+    website VARCHAR(255), -- Added column for the streaming site link
     FOREIGN KEY (medium_id) REFERENCES `mediums`(medium_id),
     FOREIGN KEY (platform_id) REFERENCES Platforms(platform_id) -- Foreign key references Platform
     -- add a password hash
@@ -65,11 +66,10 @@ INSERT INTO `mediums` (name) VALUES
 ('Webcam');
 
 -- Insert data into the Streamers table
-INSERT INTO Streamers (name, member_id, platform_id, medium_id) VALUES
-('DarukaEon', 'DAR123', 3, 2),
-('Riven_Black', 'RIV456', 1, 3),
-('Defii_Azrul', 'DEF789', 2, 1);
-
+INSERT INTO Streamers (name, member_id, platform_id, medium_id, website) VALUES
+('DarukaEon', 'DAR123', 3, 2, 'https://darukaeon.github.io/'),
+('Riven_Black', 'RIV456', 1, 3, 'https://www.twitch.tv/riven_black'),
+('Defii_Azrul', 'DEF789', 2, 1, 'https://www.twitch.tv/itbedefii');
 
 -- Insert data into the Stream table
 INSERT INTO `Streams` (streamer_id, platform_id, date, title, tags, viewer_count, follow_count) VALUES
