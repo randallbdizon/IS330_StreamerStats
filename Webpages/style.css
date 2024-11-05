@@ -5,7 +5,7 @@ body {
 
 @font-face {
 	font-family: Blogger Sans;
-	src: url("Media/Fonts/blogger-sans-font/Bloggersans-0rzv.otf");
+	src: url("./../Media/Fonts/blogger-sans-font/Bloggersans-0rzv.otf");
 }
 
 body {
@@ -13,7 +13,7 @@ body {
 	font-family: Blogger Sans;
 	background-color: #000000;
 	color: white;
-	background-image: url("Media/Images/GreenGlitterBackground2.gif");
+	background-image: url("./../Media/Images/GreenGlitterBackground2.gif");
 	background-size: 1920px auto;
 	background-attachment: fixed;
 	background-repeat: no-repeat;

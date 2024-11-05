@@ -9,7 +9,7 @@
     $servername = "localhost";
     $username = "root";
     $password = "";
-    $dbname = "streamerStat";
+    $dbname = "streamer_db";
 
     // Create connection
     $conn = new mysqli($servername, $username, $password, $dbname);
@@ -61,8 +61,7 @@
                     }
 
                     // Display the platform image as a clickable link
-                    echo "<br> <a href='" . $website . "'><img src='" . $platformImage . "' alt='Platform' class='platform-icon' class='transition-link'
-                        data-transition='Media/Images/GreenZoomBack1.gif'></a>";
+                    echo "<br> <a href='" . $website . "'><img src='" . $platformImage . "' alt='Platform' class='platform-icon'></a>";
                 } else {
                     echo "<br> No website.";
                 }
