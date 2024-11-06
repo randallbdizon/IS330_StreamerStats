@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pass = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hash the password for security
 
     // SQL to insert the user
-    $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+    $sql = "INSERT INTO logins (username, password) VALUES (?, ?)";
     $stmt = $conn->prepare($sql);
     
     if ($stmt) {

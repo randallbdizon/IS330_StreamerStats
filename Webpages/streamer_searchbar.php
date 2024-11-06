@@ -46,18 +46,18 @@
                     $website = htmlspecialchars($row["website"]);
 
                     // Determine the platform type and replace link text with an image
-                    $platformImage = "Media/Images/Website.png"; // Default image if platform isn't matched
+                    $platformImage = "../Media/Images/Website.png"; // Default image if platform isn't matched
     
                     if (strpos($website, 'twitch.tv') !== false) {
-                        $platformImage = "Media/Images/Twitch.png";
+                        $platformImage = "../Media/Images/Twitch.png";
                     } elseif (strpos($website, 'youtube.com') !== false || strpos($website, 'youtu.be') !== false) {
-                        $platformImage = "Media/Images/Youtube.png";
+                        $platformImage = "../Media/Images/Youtube.png";
                     } elseif (strpos($website, 'twitter.com') !== false) {
-                        $platformImage = "Media/Images/Twitter.png";
+                        $platformImage = "../Media/Images/Twitter.png";
                     } elseif (strpos($website, 'facebook.com') !== false) {
-                        $platformImage = "Media/Images/Facebook.png";
+                        $platformImage = "../Media/Images/Facebook.png";
                     } elseif (strpos($website, 'trovo.com') !== false) {
-                        $platformImage = "Media/Images/Trovo.png";
+                        $platformImage = "../Media/Images/Trovo.png";
                     }
 
                     // Display the platform image as a clickable link
