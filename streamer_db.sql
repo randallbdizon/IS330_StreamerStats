@@ -63,6 +63,7 @@ INSERT INTO `mediums` (name) VALUES
 INSERT INTO Streamers (name, member_id, platform_id, medium_id, website) VALUES
 ('DarukaEon', 'DAR123', 3, 2, 'https://darukaeon.github.io/'),
 ('Riven_Black', 'RIV456', 1, 3, 'https://www.twitch.tv/riven_black'),
+('Senzawa', 'SEN626', 1, 3, 'https://www.youtube.com/@senzawa'),
 ('Defii_Azrul', 'DEF789', 2, 1, 'https://www.twitch.tv/itbedefii');
 
 INSERT INTO `Streams` (streamer_id, platform_id, date, title, tags, viewer_count, follow_count) VALUES
@@ -72,4 +73,4 @@ INSERT INTO `Streams` (streamer_id, platform_id, date, title, tags, viewer_count
 
 -- Select statements below
 
-SELECT * FROM users;
+SELECT * FROM logins;

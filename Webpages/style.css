@@ -9,6 +9,7 @@ body {
 }
 
 body {
+	font-size: 28px;
 	text-align: left;
 	font-family: Blogger Sans;
 	background-color: #000000;
@@ -31,6 +32,7 @@ footer {
 /* nav menu section*/
 
 #nav_menu {
+	font-size: 18px;
 	text-align: center;
 	/* Center the navigation menu */
 }
@@ -105,6 +107,14 @@ footer {
 .image-container:hover .swap-image {
 	content: url('Media/Images/DarukaEon2.png');
 }
+
+
+.auth-container {
+	float: right;
+	margin-right: 20px;
+}
+
+
 
 section {
 	width: 50%;
