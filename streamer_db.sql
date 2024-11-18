@@ -8,10 +8,11 @@ CREATE TABLE Platforms (
     name VARCHAR(100) NOT NULL UNIQUE
 );
 
-CREATE TABLE logins (
+CREATE TABLE Logins (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL
+    password VARCHAR(255) NOT NULL,
+    admin TINYINT(1) DEFAULT 0
 );
 
 CREATE TABLE `Mediums` (
@@ -26,9 +27,8 @@ CREATE TABLE Streamers (
     platform_id INT,  -- Ensure this data type matches with the primary key in Platform
     medium_id INT,
     website VARCHAR(255), -- Added column for the streaming site link
-    FOREIGN KEY (medium_id) REFERENCES `mediums`(medium_id),
+    FOREIGN KEY (medium_id) REFERENCES `Mediums`(medium_id),
     FOREIGN KEY (platform_id) REFERENCES Platforms(platform_id) -- Foreign key references Platform
-    -- add a password hash
 );
 
 CREATE TABLE `Streams` (
@@ -46,6 +46,16 @@ CREATE TABLE `Streams` (
     FOREIGN KEY (medium_id) REFERENCES `mediums`(medium_id)
 );
 
+CREATE TABLE projects (
+    project_id INT AUTO_INCREMENT PRIMARY KEY,
+    streamer_id INT,
+    project_name VARCHAR(255) NOT NULL,
+    description TEXT,
+    project_image_path VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (streamer_id) REFERENCES Streamers(streamer_id)
+);
+
 -- Inserts
 
 INSERT INTO Platforms (name) VALUES 
@@ -55,7 +65,7 @@ INSERT INTO Platforms (name) VALUES
 ('Kick'),
 ('Trovo');
 
-INSERT INTO `mediums` (name) VALUES
+INSERT INTO `Mediums` (name) VALUES
 ('VTuber'),
 ('PNG'),
 ('Webcam');
@@ -71,6 +81,9 @@ INSERT INTO `Streams` (streamer_id, platform_id, date, title, tags, viewer_count
 (2, 3, '2024-10-07', 'Working on Guitar Tracks', 'music, guitar', 3, 8),
 (3, 1, '2024-10-07', 'Magic Mondays', 'collab, gaming', 15, 13);
 
+INSERT INTO `Logins` (username, password, admin) VALUES
+('DarukaEon', '$2y$10$Hmb1zV25aDKj9IG3BWOk4eKGfucJ4AZIjtCdEnSQTMbAe1uzh1x0y', 1);
+
 -- Select statements below
 
-SELECT * FROM logins;
+SELECT * FROM Logins;

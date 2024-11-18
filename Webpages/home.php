@@ -26,7 +26,7 @@
                 professionals, but
                 we bring our passion and talents to every stream—and we'd love to share that with you. Come hang out and
                 be part
-                of our community. Let’s have some fun together!</p>
+                of our community. Let's have some fun together!</p>
 </body>
 
 </html>

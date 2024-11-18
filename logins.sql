@@ -1,3 +1,4 @@
 -- To save logins
 USE streamer_db;
-SELECT * FROM logins;
+SELECT * FROM Logins;
+SELECT * FROM Projects;
