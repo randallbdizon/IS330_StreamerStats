@@ -46,7 +46,7 @@ CREATE TABLE `Streams` (
     FOREIGN KEY (medium_id) REFERENCES `mediums`(medium_id)
 );
 
-CREATE TABLE projects (
+CREATE TABLE Projects (
     project_id INT AUTO_INCREMENT PRIMARY KEY,
     streamer_id INT,
     project_name VARCHAR(255) NOT NULL,

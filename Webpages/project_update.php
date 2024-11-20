@@ -1,20 +1,6 @@
 <?php
-// Starting session
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "streamer_db";
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+// Include the database connection
+include 'db_connection.php';  // Make sure this is correctly pointing to your database connection file
 
 // Regenerate session ID to prevent fixation attacks
 if (!isset($_SESSION['regenerated'])) {
@@ -28,17 +14,17 @@ if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
     exit;
 }
 
-// Get user information from database
+// Get user information from the database
 $username = $_SESSION['username'];
 $sql = "SELECT * FROM logins WHERE username = ?";
-$stmt = $conn->prepare($sql);
+$stmt = $connection->prepare($sql); // Changed to $connection for consistency
 $stmt->bind_param("s", $username);
 $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows === 1) {
     $user = $result->fetch_assoc();
-    
+
     // Check if user is an admin
     if ($user['admin'] != 1) {
         echo "<p>You do not have permission to access this page.</p>";
@@ -78,21 +64,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "<p>Sorry, your file was not uploaded.</p>";
     } else {
         if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
-            // Insert file details into database
+            // Insert file details into the database
             $sql = "INSERT INTO projects (project_name, description, created_at, project_image_path) VALUES (?, ?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-    
+            $stmt = $connection->prepare($sql); // Changed to $connection
+
             if (!$stmt) {
-                die("Prepare failed: " . $conn->error);
+                die("Prepare failed: " . $connection->error); // Changed to $connection
             }
-    
+
             // Assuming the variables are renamed accordingly
             $project_name = $title;  // Rename your variable to match the column
             $created_at = $upload_date; // Optional: omit if using the default timestamp
             $project_image_path = $target_file;
-    
+
             $stmt->bind_param("ssss", $project_name, $description, $created_at, $project_image_path);
-    
+
             if ($stmt->execute()) {
                 echo "<p>The file " . htmlspecialchars(basename($_FILES["file"]["name"])) . " has been uploaded successfully.</p>";
             } else {
@@ -102,18 +88,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo "<p>Sorry, there was an error uploading your file.</p>";
         }
     }
-    
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Upload Page</title>
-</head>
 <body>
+
 <h2>Upload File</h2>
 <form action="" method="post" enctype="multipart/form-data">
     <label for="title">Title:</label>
@@ -127,5 +106,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <input type="submit" value="Upload File" name="submit">
 </form>
+
+<h1>Project Updates</h1>
+
+<?php
+// Write the query to select all projects
+$query = "SELECT * FROM projects";
+$result = mysqli_query($connection, $query); // Changed to $connection
+
+// Check if the query was successful
+if (!$result) {
+    die("Query failed: " . mysqli_error($connection)); // Changed to $connection
+}
+
+// Loop through the results and display the projects
+while ($row = mysqli_fetch_assoc($result)) {
+    echo "<div class='project'>";
+    echo "<h2>" . htmlspecialchars($row['project_name']) . "</h2>";
+    echo "<p>" . htmlspecialchars($row['description']) . "</p>";
+    if (!empty($row['project_image_path'])) {
+        echo "<img src='" . htmlspecialchars($row['project_image_path']) . "' alt='Project Image'>";
+    }
+    echo "</div>";
+}
+?>
+
 </body>
-</html>

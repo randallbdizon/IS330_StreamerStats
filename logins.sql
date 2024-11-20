@@ -2,3 +2,4 @@
 USE streamer_db;
 SELECT * FROM Logins;
 SELECT * FROM Projects;
+SELECT * FROM Streamers;
