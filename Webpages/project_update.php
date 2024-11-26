@@ -1,7 +1,11 @@
-
 <?php
 // Include the database connection
 include 'db_connection.php';  // Make sure this is correctly pointing to your database connection file
+
+// Set higher file upload limits
+ini_set('upload_max_filesize', '10M');
+ini_set('post_max_size', '10M');
+ini_set('max_execution_time', '300');
 
 // Regenerate session ID to prevent fixation attacks
 if (!isset($_SESSION['regenerated'])) {
@@ -48,7 +52,7 @@ if ($result->num_rows === 1) {
 }
 
 // File upload logic
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     $title = $_POST['title'];
     $description = $_POST['description'];
     $upload_date = date('Y-m-d');
@@ -58,6 +62,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $target_file = $target_dir . basename($_FILES["file"]["name"]);
     $uploadOk = 1;
     $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    $maxFileSize = 10 * 1024 * 1024; // 10MB in bytes
+
+    // Check if the file exceeds the maximum allowed size
+    if ($_FILES["file"]["size"] > $maxFileSize) {
+        echo "<p>Sorry, the file is too large. Maximum allowed size is 10MB.</p>";
+        $uploadOk = 0;
+    }
 
     // Check if file already exists
     if (file_exists($target_file)) {
@@ -93,20 +104,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if ($stmt->execute()) {
                 echo "<p>The file " . htmlspecialchars(basename($_FILES["file"]["name"])) . " has been uploaded successfully.</p>";
+                // Redirect to prevent form resubmission
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit;
             } else {
                 echo "<p>Sorry, there was an error uploading your file to the database: " . $stmt->error . "</p>";
             }
         } else {
-            echo "<p>Sorry, there was an error uploading your file.</p>";
+            $upload_error_code = $_FILES["file"]["error"];
+            switch ($upload_error_code) {
+                case UPLOAD_ERR_INI_SIZE:
+                    $error_message = "The uploaded file exceeds the upload_max_filesize directive in php.ini.";
+                    break;
+                case UPLOAD_ERR_FORM_SIZE:
+                    $error_message = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.";
+                    break;
+                case UPLOAD_ERR_PARTIAL:
+                    $error_message = "The uploaded file was only partially uploaded.";
+                    break;
+                case UPLOAD_ERR_NO_FILE:
+                    $error_message = "No file was uploaded.";
+                    break;
+                case UPLOAD_ERR_NO_TMP_DIR:
+                    $error_message = "Missing a temporary folder.";
+                    break;
+                case UPLOAD_ERR_CANT_WRITE:
+                    $error_message = "Failed to write file to disk.";
+                    break;
+                case UPLOAD_ERR_EXTENSION:
+                    $error_message = "A PHP extension stopped the file upload.";
+                    break;
+                default:
+                    $error_message = "Unknown upload error.";
+                    break;
+            }
+            echo "<p>Sorry, there was an error uploading your file. Error: " . htmlspecialchars($upload_error_code) . " - " . $error_message . "</p>";
         }
     }
 }
 ?>
 
 <body>
-
-
-
 <h1>Project Updates</h1>
 
 <?php
@@ -125,6 +163,13 @@ while ($row = mysqli_fetch_assoc($result)) {
     echo "<div class='project'>";
     echo "<h2>" . htmlspecialchars($row['project_name']) . "</h2>";
     echo "<p>" . htmlspecialchars($row['description']) . "</p>";
+    if ($user['admin'] === 1) {
+        echo "<form method='post' action=''>
+                    <input type='hidden' name='delete_id' value='" . htmlspecialchars($row['project_id']) . "'>
+                    <input type='hidden' name='delete_file_path' value='" . htmlspecialchars($row['project_image_path']) . "'>
+                    <input type='submit' name='delete' value='Delete'>
+              </form>";
+    }
     echo "</section>";
     echo "<aside>";
     if (!empty($row['project_image_path'])) {
@@ -133,6 +178,34 @@ while ($row = mysqli_fetch_assoc($result)) {
     echo "</div>";
     echo "</aside>";
 }
-?>
 
+// Deletion logic
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete'])) {
+    // Check if user is an admin
+    if ($user['admin'] === 1) {
+        $delete_id = $_POST['delete_id'];
+        $delete_file_path = $_POST['delete_file_path'];
+
+        // Delete the file from the server
+        if (file_exists($delete_file_path)) {
+            unlink($delete_file_path);
+        }
+
+        // Delete the record from the database
+        $delete_sql = "DELETE FROM projects WHERE project_id = ?";
+        $delete_stmt = $connection->prepare($delete_sql);
+        $delete_stmt->bind_param("i", $delete_id);
+        
+        if ($delete_stmt->execute()) {
+            echo "<p>Project deleted successfully.</p>";
+            // Refresh the page to reflect changes
+            echo "<meta http-equiv='refresh' content='0'>";
+        } else {
+            echo "<p>Error deleting project: " . $delete_stmt->error . "</p>";
+        }
+    } else {
+        echo "<p>You do not have permission to delete this project.</p>";
+    }
+}
+?>
 </body>

@@ -48,6 +48,7 @@ CREATE TABLE `Streams` (
 CREATE TABLE Projects (
     project_id INT AUTO_INCREMENT PRIMARY KEY,
     streamer_id INT,
+    uploaded_by VARCHAR(255) NOT NULL,
     project_name VARCHAR(255) NOT NULL,
     description TEXT,
     project_image_path VARCHAR(255),
