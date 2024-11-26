@@ -1,7 +1,0 @@
-Idea for webpage:
-
-- Login splash page to create user or to log in.
-- If logged in, determine if user is part of the group
-  - If user is part of the group, allow update options in Project page.
-    - Determine that through back-end in DB.
-  - If user is not part of group, give option to skip password screen and only allow view Project page.

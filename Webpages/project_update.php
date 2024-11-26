@@ -1,3 +1,4 @@
+
 <?php
 // Include the database connection
 include 'db_connection.php';  // Make sure this is correctly pointing to your database connection file
@@ -26,9 +27,20 @@ if ($result->num_rows === 1) {
     $user = $result->fetch_assoc();
 
     // Check if user is an admin
-    if ($user['admin'] != 1) {
-        echo "<p>You do not have permission to access this page.</p>";
-        exit;
+    if ($user['admin'] === 1) {
+        echo '<h2>Upload File</h2>
+                <form action="" method="post" enctype="multipart/form-data">
+                    <label for="title">Title:</label>
+                    <input type="text" name="title" id="title" required><br><br>
+    
+                    <label for="description">Description:</label><br>
+                    <textarea name="description" id="description" rows="4" cols="50" required></textarea><br><br>
+
+                    <label for="file">Select file to upload:</label>
+                    <input type="file" name="file" id="file" required><br><br>
+
+                    <input type="submit" value="Upload File" name="submit">
+                </form>';
     }
 } else {
     echo "<p>Invalid user.</p>";
@@ -93,19 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body>
 
-<h2>Upload File</h2>
-<form action="" method="post" enctype="multipart/form-data">
-    <label for="title">Title:</label>
-    <input type="text" name="title" id="title" required><br><br>
-    
-    <label for="description">Description:</label><br>
-    <textarea name="description" id="description" rows="4" cols="50" required></textarea><br><br>
 
-    <label for="file">Select file to upload:</label>
-    <input type="file" name="file" id="file" required><br><br>
-
-    <input type="submit" value="Upload File" name="submit">
-</form>
 
 <h1>Project Updates</h1>
 
@@ -121,13 +121,17 @@ if (!$result) {
 
 // Loop through the results and display the projects
 while ($row = mysqli_fetch_assoc($result)) {
+    echo "<section>";
     echo "<div class='project'>";
     echo "<h2>" . htmlspecialchars($row['project_name']) . "</h2>";
     echo "<p>" . htmlspecialchars($row['description']) . "</p>";
+    echo "</section>";
+    echo "<aside>";
     if (!empty($row['project_image_path'])) {
         echo "<img src='" . htmlspecialchars($row['project_image_path']) . "' alt='Project Image'>";
     }
     echo "</div>";
+    echo "</aside>";
 }
 ?>
 

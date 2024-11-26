@@ -114,9 +114,35 @@ footer {
 	margin-right: 20px;
 }
 
+/* Assuming you have a wrapper unique to index.php */
+#index-page .auth-container {
+	float: left;
+	margin-left: 350px;
+}
 
 
-section {
+/* This targets both section and aside to ensure they align properly */
+section, aside {
+    width: 48%;  /* Make them slightly less than 50% to avoid overflow issues */
+    box-sizing: border-box;  /* Ensures padding and borders are included in the width */
+    float: left;
+    padding: 10px;  /* Optional, for spacing between elements */
+    margin-bottom: 20px;  /* Space between each project */
+}
+
+/* Make sure that each new project clears properly */
+section:nth-child(odd), aside:nth-child(odd) {
+    clear: both;  /* Ensures the layout resets for new projects */
+}
+
+aside img {
+    max-width: 596px;
+    width: 100%;
+    height: auto;
+}
+
+
+/* section {
 	width: 50%;
 	float: left;
 }
@@ -125,10 +151,20 @@ aside {
 	width: 50%;
 	float: right;
 	position: relative;
-}
+} */
+
 
 /*Responsive web design thresholds*/
 /*Note: [margin/padding]: top right bottom left*/
+
+@media only screen and (width <=1182.40px) {
+	section,
+	aside {
+		float: none;
+		flex-direction: column;
+		width: 100%;
+	}
+}
 
 @media only screen and (width <=1117.60px) {
 	.image-container {

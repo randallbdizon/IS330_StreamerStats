@@ -6,22 +6,10 @@
 
 <ul>
     <?php
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "streamer_db";
-
-    // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
+    include 'db_connection.php';
     // Check if a specific streamer is being searched for
     if (isset($_GET['streamer']) && !empty($_GET['streamer'])) {
-        $streamer = $conn->real_escape_string($_GET['streamer']);
+        $streamer = $connection->real_escape_string($_GET['streamer']);
         $sql = "SELECT * FROM streamers WHERE name LIKE '%$streamer%'";
         echo "Searching for Streamer: " . htmlspecialchars($streamer) . "<br><br>";
     } else {
@@ -29,10 +17,10 @@
         $sql = "SELECT * FROM streamers";
     }
 
-    $result = $conn->query($sql);
+    $result = $connection->query($sql);
 
     if (!$result) {
-        die("Error executing query: " . $conn->error);
+        die("Error executing query: " . $connection->error);
     }
 
     if ($result->num_rows > 0) {
@@ -73,6 +61,6 @@
         echo "0 results";
     }
 
-    $conn->close();
+    $connection->close();
     ?>
 </ul>

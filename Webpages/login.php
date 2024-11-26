@@ -1,22 +1,7 @@
 <?php
-session_start(); // Start the session
-
-// Database connection details
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "streamer_db";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
+include 'db_connection.php';
 // Enable autocommit to ensure changes are saved permanently
-$conn->autocommit(TRUE);
+$connection->autocommit(TRUE);
 
 // Add a div with a class to wrap login/logout forms for styling
 echo '<div class="auth-container">';
@@ -89,10 +74,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // SQL to insert the user
             $sql = "INSERT INTO logins (username, password) VALUES ('$user', '$hashed_pass')";
 
-            if ($conn->query($sql) === TRUE) {
+            if ($connection->query($sql) === TRUE) {
                 echo "Account created successfully!";
             } else {
-                echo "Error creating account: " . $conn->error;
+                echo "Error creating account: " . $connection->error;
             }
         } else {
             echo "Passwords do not match. Please try again.";
@@ -104,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // SQL to check user credentials
         $sql = "SELECT password FROM logins WHERE username='$user'";
-        $result = $conn->query($sql);
+        $result = $connection->query($sql);
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -134,5 +119,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Close the database connection
-$conn->close();
+$connection->close();
 ?>
